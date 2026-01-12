@@ -1,0 +1,25 @@
+body {
+  font-family: system-ui, sans-serif;
+  background: #fafafa;
+  color: #222;
+  max-width: 720px;
+  margin: 40px auto;
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+}
+
+textarea, select, button {
+  width: 100%;
+  margin-top: 6px;
+}
+
+button {
+  margin-top: 30px;
+}
+
+nav a {
+  margin-right: 20px;
+}
