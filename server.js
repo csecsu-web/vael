@@ -18,7 +18,7 @@ app.use(session({
 }));
 
 app.use(require('./middleware'));
-
+app.use('/', require('./routes/export-md'));
 app.use('/', require('./routes/auth'));
 app.use('/', require('./routes/home'));
 app.use('/', require('./routes/today'));
@@ -29,3 +29,4 @@ app.use('/', require('./routes/export'));
 app.use('/', require('./routes/delete'));
 
 app.listen(3000);
+
