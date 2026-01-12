@@ -1,6 +1,9 @@
 module.exports = function (req, res, next) {
-  if (!req.session.user && req.path !== '/login') {
+  const openPaths = ['/login'];
+
+  if (!req.session.user && !openPaths.includes(req.path)) {
     return res.redirect('/login');
   }
+
   next();
 };
