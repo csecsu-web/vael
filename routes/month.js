@@ -10,59 +10,64 @@ router.get('/month', (req, res) => {
   const month = currentMonth();
 
   const daily = db.prepare(
-    `SELECT date, energy_direction, moment FROM daily_entry
-     WHERE date LIKE ? ORDER BY date`
+    `SELECT date, energy_direction, moment
+     FROM daily_entry
+     WHERE date LIKE ?
+     ORDER BY date`
   ).all(`${month}%`);
 
   const weekly = db.prepare(
-    `SELECT week, summary FROM weekly_reflection
+    `SELECT week, summary
+     FROM weekly_reflection
      WHERE week LIKE ?`
-  ).all(`${month.slice(0,4)}%`);
+  ).all(`${month.slice(0, 4)}%`);
 
   const m = db.prepare(
     `SELECT * FROM monthly_reflection WHERE month = ?`
   ).get(month) || {};
 
   let html = `
-  <!doctype html>
-  <html>
-  <head>
-    <link rel="stylesheet" href="/style.css">
-  </head>
-  <body>
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
 
-  <h2>Daily entries</h2>
-  <pre>${daily.map(d =>
-    `${d.date} — ${d.energy_direction}\n${d.moment}\n`
-  ).join('\n')}</pre>
+<h2>Daily entries</h2>
+<pre>${daily.map(d =>
+`${d.date} — ${d.energy_direction}
+${d.moment}
+`).join('\n')}</pre>
 
-  <h2>Weekly reflections</h2>
-  <pre>${weekly.map(w =>
-    `${w.week}\n${w.summary || ''}\n`
-  ).join('\n')}</pre>
+<h2>Weekly reflections</h2>
+<pre>${weekly.map(w =>
+`${w.week}
+${w.summary || ''}
+`).join('\n')}</pre>
 
-  <form method="post">
-    <label>What pattern do I see now that I couldn’t see daily?</label>
-    <textarea name="patterns">${m.patterns || ''}</textarea>
+<form method="post">
+  <label>What pattern do I see now that I couldn’t see daily?</label>
+  <textarea name="patterns">${m.patterns || ''}</textarea>
 
-    <label>What is slowly draining me?</label>
-    <textarea name="draining">${m.draining || ''}</textarea>
+  <label>What is slowly draining me?</label>
+  <textarea name="draining">${m.draining || ''}</textarea>
 
-    <label>What stabilizes me without effort?</label>
-    <textarea name="stabilizing">${m.stabilizing || ''}</textarea>
+  <label>What stabilizes me without effort?</label>
+  <textarea name="stabilizing">${m.stabilizing || ''}</textarea>
 
-    <label>What direction does my life seem to be drifting?</label>
-    <textarea name="drifting">${m.drifting || ''}</textarea>
+  <label>What direction does my life seem to be drifting?</label>
+  <textarea name="drifting">${m.drifting || ''}</textarea>
 
-    <label>What this month taught me</label>
-    <textarea name="lesson">${m.lesson || ''}</textarea>
+  <label>What this month taught me</label>
+  <textarea name="lesson">${m.lesson || ''}</textarea>
 
-    <button type="submit">Save</button>
-  </form>
+  <button type="submit">Save</button>
+</form>
 
-  </body>
-  </html>
-  `;
+</body>
+</html>
+`;
 
   res.send(html);
 });
@@ -81,3 +86,4 @@ router.post('/month', (req, res) => {
 });
 
 module.exports = router;
+
